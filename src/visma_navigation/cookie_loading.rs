@@ -1,3 +1,7 @@
+use std::fs;
+
+use fantoccini::{cookies::Cookie, Client};
+
 #[derive(serde::Deserialize)]
 struct CookieData {
     #[serde(rename="Name raw")]

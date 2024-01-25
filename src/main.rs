@@ -1,9 +1,10 @@
 pub mod visma_navigation;
 pub mod bulking;
 
-use std::{thread::sleep, time::Duration}; use fantoccini::ClientBuilder;
+use std::{path::Path, thread::sleep, time::Duration}; use bulking::article::{add_articles, Article};
+use fantoccini::ClientBuilder;
 use tokio;
-use visma_navigation::{goto_article_menu, init_site};
+use visma_navigation::init_site;
 
 #[tokio::main]
 async fn main() -> Result<(), fantoccini::error::CmdError> {
@@ -11,7 +12,15 @@ async fn main() -> Result<(), fantoccini::error::CmdError> {
 
     init_site(&c).await?;
 
-    goto_article_menu(&c).await?;
+    let article = Article {
+        number: String::from("123123"),
+        name: String::from("Lampjävel"),
+        image_path: &Path::new("./article/Untitled.jpg"),
+        price_vat: 259.2
+    };
+
+    let art_vec = vec![&article];
+    add_articles(&c, &art_vec).await?;
 
     sleep(Duration::from_secs(10));
     c.close().await
